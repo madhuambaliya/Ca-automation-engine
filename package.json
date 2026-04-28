@@ -1,0 +1,26 @@
+{
+  "name": "ca-automation-engine",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.104.0",
+    "axios": "^1.15.1",
+    "cheerio": "^1.2.0",
+    "dotenv": "^17.4.2",
+    "google-translate-api-next": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}

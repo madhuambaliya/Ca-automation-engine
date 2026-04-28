@@ -1,0 +1,37 @@
+name: Daily Current Affairs Scraper
+
+on:
+  schedule:
+    # Runs at 02:00 IST (20:30 UTC) every day
+    - cron: '30 20 * * *'
+  workflow_dispatch: # Allows manual trigger
+    inputs:
+      scrape_url:
+        description: 'Manual URL to scrape'
+        required: false
+
+jobs:
+  scrape-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Scraper
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+          SCRAPE_URL: ${{ github.event.inputs.scrape_url }}
+        run: npm start
