@@ -120,14 +120,18 @@ export class Uploader {
 
       if (linkErr) console.error(`[Uploader] Link Error:`, linkErr);
 
-      // 4. Update the question_count on the quiz
-      const totalCount = existingCount + questionLinks.length;
+      // 4. Update the question_count on the quiz based on actual links
+      const { count: actualCount } = await this.supabase
+        .from('quiz_questions')
+        .select('*', { count: 'exact', head: true })
+        .eq('quiz_id', quizId);
+
       await this.supabase
         .from('quizzes')
-        .update({ question_count: totalCount })
+        .update({ question_count: actualCount ?? 0 })
         .eq('id', quizId);
         
-      console.log(`[Uploader] Updated quiz question count to: ${totalCount}`);
+      console.log(`[Uploader] Updated quiz question count to actual: ${actualCount ?? 0}`);
     }
     
     console.log(`[Uploader] Finished processing batch for ${dailyDate}.`);
